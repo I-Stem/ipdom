@@ -25,7 +25,7 @@ Import the library by adding this in your `Cargo.toml` file
 ```
     [dependencies]
     ipdom = { git = "https://github.com/shaddyshad/ipdom"}
-    
+
 ```
 
 In your source file 
@@ -37,7 +37,7 @@ In your source file
     use ipdom::{IpDom, parse_file};
 
     fn main(){
-        let filepath = "/path/to/file.xml";
+        let filepath = "/path/to/file";
 
         let dom = parse_file(filepath).unwrap();  // IpDom structure
     }
