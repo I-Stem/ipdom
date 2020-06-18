@@ -3,8 +3,11 @@ mod interface;
 mod qual_name;
 use std::cell::RefCell;
 
-use interface::{RawNode, Node, NodeData, AttributeTypes};
-use qual_name::QualName;
+pub use interface::{RawNode, Node, NodeData, AttributeTypes};
+pub use qual_name::QualName;
+
+mod find;
+pub use find::{Find, Predicate};
 
 ///! index pointed dom
 #[derive(Debug)]
@@ -28,6 +31,15 @@ impl IpDom {
     /// Return the node at that index, or None if none
     pub fn nth(&self, index: usize) -> Option<Node>{
         Node::new(&self, index)
+    }
+
+    // find a predicate 
+    pub fn find<P: Predicate>(&self, predicate: P, next: usize) -> Find<P> {
+        Find {
+            dom: &self,
+            predicate,
+            next
+        }
     }
 }
 

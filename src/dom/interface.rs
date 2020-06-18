@@ -2,6 +2,7 @@ use super::{StrTendril, IpDom, QualName};
 use std::collections::HashMap;
 use std::cell::RefCell;
 use super::utils::matches;
+use std::fmt;
 
 /// Node internal representation
 #[derive(Debug)]
@@ -32,6 +33,16 @@ impl NodeData {
     /// Insert an attribute 
     pub fn insert(&mut self, attr: (StrTendril, AttributeTypes)){
         self.attributes.insert(attr.0, attr.1);
+    }
+
+    /// get the name of this node 
+    pub fn name(&self) -> &QualName {
+        &self.name
+    }
+
+    /// Return a reference to the attributes
+    pub fn attrs(&self) -> &HashMap<StrTendril, AttributeTypes> {
+        &self.attributes
     }
 }
 
@@ -106,6 +117,17 @@ pub struct Node<'a>{
     dom: &'a IpDom
 }
 
+impl<'a> fmt::Debug for Node<'a> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f, 
+            "Node at index {:?}",
+            self.index()
+        )
+    } 
+}
+
+
 impl<'a> Node<'a>{
     /// create a new instance
     pub fn new(dom: &'a IpDom, index: usize) -> Option<Self>{
@@ -128,5 +150,10 @@ impl<'a> Node<'a>{
     // index 
     pub fn index(&self) -> usize {
         self.index
+    }
+
+    // data 
+    pub fn data(&self) -> &RefCell<NodeData> {
+        &self.raw().data
     }
 }
