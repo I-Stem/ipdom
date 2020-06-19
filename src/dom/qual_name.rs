@@ -14,10 +14,9 @@ pub enum QualName {
     Element
 }
 
-/// For conversion to string
-impl fmt::Display for QualName {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // convert enum varians to string 
+
+impl QualName {
+    pub fn to_str(&self) -> String {
         match self {
             Self::Document => write!({},"document"),
             Self::Question => write!({}, "question"),
@@ -30,10 +29,6 @@ impl fmt::Display for QualName {
             
         }
     }
-}
-
-
-impl QualName {
     pub fn from_tendril(s: &StrTendril) -> Self {
         // Document tag 
         if matches(s, "root"){
