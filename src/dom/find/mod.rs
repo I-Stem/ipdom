@@ -4,14 +4,14 @@ mod predicate;
 pub use predicate::Predicate;
 
 ///! Find iterator interface
-pub struct Find<'a, P: Predicate> {
+pub struct Find<'a> {
     pub dom: &'a IpDom,
-    pub predicate: P,
+    pub predicate: Box<Predicate>,
     pub next: usize,
 }
 
 
-impl<'a, P:Predicate> Iterator for Find<'a, P>{
+impl<'a> Iterator for Find<'a>{
     type Item = Node<'a>;
 
     fn next(&mut self) -> Option<Self::Item>{
@@ -29,7 +29,7 @@ impl<'a, P:Predicate> Iterator for Find<'a, P>{
     }
 }
 
-impl<'a, P: Predicate> DoubleEndedIterator for Find<'a,P>{
+impl<'a> DoubleEndedIterator for Find<'a>{
     fn next_back(&mut self) -> Option<Node<'a>>{
         while self.next > 0 && self.next < self.dom.len(){
             let node = self.dom.nth(self.next).unwrap();
