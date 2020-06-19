@@ -17,14 +17,14 @@ pub enum QualName {
 impl QualName {
     pub fn read(&self) -> String {
         match self {
-            Self::Document => write!("{}","document"),
-            Self::Question => write!("{}", "question"),
-            Self::QuestionList => write!("{}", "question_list"),
-            Self::Section => write!("{}", "section"),
-            Self::Page => write!("{}", "page"),
-            Self::PageNumber => write!("{}", "page_number"),
-            Self::Metadata => write!("{}", "meta_data"),
-            _ => write!("{}", "element")
+            Self::Document => "document".to_string(),
+            Self::Question => "question".to_string(),
+            Self::QuestionList => "question_list".to_string(),
+            Self::Section => "section".to_string(),
+            Self::Page => "page".to_string(),
+            Self::PageNumber => "page_number".to_string(),
+            Self::Metadata => "meta_data".to_string(),
+            _ =>  "element".to_string()
             
         }
     }

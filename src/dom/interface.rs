@@ -36,8 +36,8 @@ impl NodeData {
     }
 
     /// get the name of this node 
-    pub fn name(&self) -> String {
-        self.name.read()
+    pub fn name(&self) -> &QualName {
+        &self.name
     }
 
     /// Return a reference to the attributes
