@@ -1,8 +1,8 @@
 use super::{StrTendril, IpDom, QualName};
 use std::collections::HashMap;
-use std::cell::RefCell;
 use super::utils::matches;
 use std::fmt;
+use std::sync::RwLock;
 
 /// Node internal representation
 #[derive(Debug)]
@@ -13,14 +13,14 @@ pub struct RawNode {
     pub next: Option<usize>,
     pub first_child: Option<usize>,
     pub last_child: Option<usize>,
-    pub data: RefCell<NodeData>
+    pub data: RwLock<NodeData>
 }
 
 /// Holds the data stored in a raw node 
 #[derive(Debug)]
 pub struct NodeData {
     name: QualName,
-    attributes: HashMap<StrTendril, AttributeTypes>
+    attributes: HashMap<String, AttributeTypes>
 }
 
 impl NodeData {
@@ -31,7 +31,7 @@ impl NodeData {
         }
     }
     /// Insert an attribute 
-    pub fn insert(&mut self, attr: (StrTendril, AttributeTypes)){
+    pub fn insert(&mut self, attr: (String, AttributeTypes)){
         self.attributes.insert(attr.0, attr.1);
     }
 
@@ -41,7 +41,7 @@ impl NodeData {
     }
 
     /// Return a reference to the attributes
-    pub fn attrs(&self) -> &HashMap<StrTendril, AttributeTypes> {
+    pub fn attrs(&self) -> &HashMap<String, AttributeTypes> {
         &self.attributes
     }
 }
@@ -166,7 +166,7 @@ impl<'a> Node<'a>{
     }
 
     // data 
-    pub fn data(&self) -> &RefCell<NodeData> {
+    pub fn data(&self) -> &RwLock<NodeData> {
         &self.raw().data
     }
 }

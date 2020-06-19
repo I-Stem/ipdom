@@ -2,6 +2,7 @@ use super::{StrTendril, Handle,RawToken, utils};
 mod interface;
 mod qual_name;
 use std::cell::RefCell;
+use std::sync::RwLock;
 
 pub use interface::{RawNode, Node, NodeData, AttributeTypes};
 pub use qual_name::QualName;
@@ -106,7 +107,7 @@ impl IpDom {
                 parent,
                 prev,
                 next: None,
-                data: RefCell::new(data),
+                data: RwLock::new(data),
                 first_child: None,
                 last_child: None
             };
@@ -139,13 +140,13 @@ impl IpDom {
         fn insert_attr(
             dom: &mut IpDom,
             index: Option<usize>,
-            attribute: (StrTendril, AttributeTypes)
+            attribute: (String, AttributeTypes)
         ) -> Option<usize> {
             if let Some(index) = index {
                 if let Some(node) = dom.nth(index){
                     // get the raw representation and insert
                     let raw = node.raw();
-                    let mut data = raw.data.borrow_mut();
+                    let mut data = raw.data.write().unwrap();
     
                     data.insert(attribute);
                 }
@@ -167,7 +168,7 @@ impl IpDom {
         }
 
         /// Extract an attribute frrom a raw token 
-        fn get_attribute(token: &RefCell<RawToken>) -> Option<(StrTendril, AttributeTypes)>{
+        fn get_attribute(token: &RefCell<RawToken>) -> Option<(String, AttributeTypes)>{
             let data = token.borrow();
 
             let name = &data.name.0;
@@ -178,7 +179,7 @@ impl IpDom {
                 if let Some(value) = value {
                     let attr = AttributeTypes::from_str(attr_type, value, &name);
 
-                    return Some((name.clone(), attr));
+                    return Some((name.to_string(), attr));
                 }
                 
             }
