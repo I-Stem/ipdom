@@ -37,7 +37,7 @@ impl NodeData {
 
     /// get the name of this node 
     pub fn name(&self) -> String {
-        self.name.to_str()
+        self.name.read()
     }
 
     /// Return a reference to the attributes

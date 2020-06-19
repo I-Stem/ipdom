@@ -15,16 +15,16 @@ pub enum QualName {
 
 
 impl QualName {
-    pub fn to_str(&self) -> String {
+    pub fn read(&self) -> String {
         match self {
-            Self::Document => write!({},"document"),
-            Self::Question => write!({}, "question"),
-            Self::QuestionList => write!({}, "question_list"),
-            Self::Section => write!({}, "section"),
-            Self::Page => write!({}, "page"),
-            Self::PageNumber => write!({}, "page_number"),
-            Self::Metadata => write!({}, "meta_data"),
-            _ => write!({}, "element")
+            Self::Document => write!("{}","document"),
+            Self::Question => write!("{}", "question"),
+            Self::QuestionList => write!("{}", "question_list"),
+            Self::Section => write!("{}", "section"),
+            Self::Page => write!("{}", "page"),
+            Self::PageNumber => write!("{}", "page_number"),
+            Self::Metadata => write!("{}", "meta_data"),
+            _ => write!("{}", "element")
             
         }
     }
