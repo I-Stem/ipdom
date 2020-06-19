@@ -109,6 +109,19 @@ impl AttributeTypes {
 
         Self::Null
     }
+
+    pub fn read(&self) -> String {
+        match self {
+            Self::Bool(b) => {
+                let out = if *b {"true"} else {"false"};
+
+                out.to_string()
+            },
+            Self::Str(s) => s.to_string(),
+            Self::Int(i) => i.to_string(),
+            _ => "Null".to_string() 
+        }
+    }
 }
 
 /// To navigate raw nodes with ease
