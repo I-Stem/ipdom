@@ -34,7 +34,7 @@ impl IpDom {
     }
 
     // find a predicate 
-    pub fn find(&self, predicate: Box<Predicate>, next: usize) -> Find {
+    pub fn find(&self, predicate: Box<dyn Predicate>, next: usize) -> Find {
         Find {
             dom: &self,
             predicate,

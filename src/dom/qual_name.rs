@@ -1,5 +1,4 @@
 use super::{StrTendril, utils::matches};
-use std::fmt;
 
 /// Qualified name of a node, used in the comparison finding
 #[derive(Debug, PartialEq, Eq)]

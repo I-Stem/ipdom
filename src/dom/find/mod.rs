@@ -6,7 +6,7 @@ pub use predicate::Predicate;
 ///! Find iterator interface
 pub struct Find<'a> {
     pub dom: &'a IpDom,
-    pub predicate: Box<Predicate>,
+    pub predicate: Box<dyn Predicate>,
     pub next: usize,
 }
 
