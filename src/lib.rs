@@ -4,7 +4,7 @@ mod dom;
 mod utils;
 
 pub use xml_parser::{from_file, StrTendril, Handle, RawToken};
-pub use dom::{IpDom, Predicate, Node, QualName, AttributeTypes};
+pub use dom::{IpDom, Predicate, Node, QualName, AttributeTypes, NodeData};
 
 pub fn parse_file(filepath: &str) -> Result<IpDom, &'static str>{
     let r = from_file(filepath);
