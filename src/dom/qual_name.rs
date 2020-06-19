@@ -1,4 +1,5 @@
 use super::{StrTendril, utils::matches};
+use std::fmt;
 
 /// Qualified name of a node, used in the comparison finding
 #[derive(Debug, PartialEq, Eq)]
@@ -13,6 +14,23 @@ pub enum QualName {
     Element
 }
 
+/// For conversion to string
+impl fmt::Display for QualName {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        // convert enum varians to string 
+        match self {
+            Self::Document => write!({},"document"),
+            Self::Question => write!({}, "question"),
+            Self::QuestionList => write!({}, "question_list"),
+            Self::Section => write!({}, "section"),
+            Self::Page => write!({}, "page"),
+            Self::PageNumber => write!({}, "page_number"),
+            Self::Metadata => write!({}, "meta_data"),
+            _ => write!({}, "element")
+            
+        }
+    }
+}
 
 
 impl QualName {
