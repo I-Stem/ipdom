@@ -51,7 +51,7 @@ impl NodeData {
 #[derive(Debug, PartialEq, Eq)]
 pub enum AttributeTypes {
     Bool(bool),
-    Str(StrTendril),
+    Str(String),
     Int(u32),    
     Null
 }
@@ -101,7 +101,7 @@ impl AttributeTypes {
         // string types
         if matches(key, "str"){
             // val 
-            return Self::Str(value.clone());
+            return Self::Str(value.to_string());
         }
 
        
