@@ -45,7 +45,7 @@ impl QualName {
         }
 
         // Section tag 
-        if matches(s, "SECTION_"){
+        if matches(s, "SECTION_") | matches(s, "key"){
             return Self::Section;
         }
 
