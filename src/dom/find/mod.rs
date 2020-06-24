@@ -17,7 +17,6 @@ impl <'a> Find <'a>{
             let node = self.dom.nth(self.next).unwrap();
 
             self.next += 1;
-            println!("Next {}", self.next);
             
             if self.predicate.macthes(&node){
                 let data = node.data().read().unwrap();
