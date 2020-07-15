@@ -2,22 +2,22 @@ use super::{StrTendril, Handle,RawToken, utils};
 mod interface;
 mod qual_name;
 use std::cell::RefCell;
-use std::sync::RwLock;
-
 pub use interface::{RawNode, Node, NodeData, AttributeTypes};
 pub use qual_name::QualName;
-
-mod find;
-pub use find::{Find, Predicate};
+use super::pyo3::prelude::*;
 
 ///! index pointed dom
+#[pyclass]
 #[derive(Debug)]
 pub struct IpDom {
+    #[pyo3(get, set)]
     pub nodes: Vec<RawNode>
 }
 
+#[pymethods]
 impl IpDom {
     /// Create a new instance
+    #[new]
     pub fn new() -> Self {
         Self {
             nodes: Vec::new()
@@ -30,18 +30,22 @@ impl IpDom {
     }
 
     /// Return the node at that index, or None if none
-    pub fn nth(&self, index: usize) -> Option<Node>{
-        Node::new(&self, index)
-    }
-
-    // find a predicate 
-    pub fn find(&self, predicate: Box<dyn Predicate>, next: usize) -> Find {
-        Find {
-            dom: &self,
-            predicate,
-            next
+    pub fn nth(&self, index: usize) -> Option<RawNode>{
+        if index < self.len(){
+            Some(self.nodes[index].clone())
+        }else{
+            None
         }
     }
+
+    // // find a predicate 
+    // pub fn find(&self, predicate: Box<dyn Predicate>, next: usize) -> Find {
+    //     Find {
+    //         dom: &self,
+    //         predicate,
+    //         next
+    //     }
+    // }
 }
 
 
@@ -107,7 +111,7 @@ impl IpDom {
                 parent,
                 prev,
                 next: None,
-                data: RwLock::new(data),
+                data,
                 first_child: None,
                 last_child: None
             };
@@ -145,8 +149,7 @@ impl IpDom {
             if let Some(index) = index {
                 if let Some(node) = dom.nth(index){
                     // get the raw representation and insert
-                    let raw = node.raw();
-                    let mut data = raw.data.write().unwrap();
+                    let mut data = node.data;
     
                     data.insert(attribute);
                 }

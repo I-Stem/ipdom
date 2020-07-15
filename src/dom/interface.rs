@@ -2,10 +2,13 @@ use super::{StrTendril, IpDom, QualName};
 use std::collections::HashMap;
 use super::utils::matches;
 use std::fmt;
-use std::sync::RwLock;
+use std::cell::RefCell;
+use crate::pyo3::prelude::*;
 
 /// Node internal representation
-#[derive(Debug)]
+
+#[pyclass]
+#[derive(Debug, Clone)]
 pub struct RawNode {
     pub index: usize,
     pub parent: Option<usize>,
@@ -13,11 +16,12 @@ pub struct RawNode {
     pub next: Option<usize>,
     pub first_child: Option<usize>,
     pub last_child: Option<usize>,
-    pub data: RwLock<NodeData>
+    pub data: NodeData
 }
 
 /// Holds the data stored in a raw node 
-#[derive(Debug)]
+#[pyclass]
+#[derive(Debug, Clone)]
 pub struct NodeData {
     name: QualName,
     attributes: HashMap<String, AttributeTypes>
@@ -48,13 +52,15 @@ impl NodeData {
 
 
 /// Attribute types for node data 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum AttributeTypes {
     Bool(bool),
     Str(String),
     Int(u32),    
     Null
 }
+
+
 
 impl AttributeTypes {
     pub fn from_str(key: &StrTendril, value: &StrTendril, name: &StrTendril) -> Self {
@@ -125,6 +131,7 @@ impl AttributeTypes {
 }
 
 /// To navigate raw nodes with ease
+#[derive(Clone)]
 pub struct Node<'a>{
     index: usize,
     dom: &'a IpDom
@@ -166,7 +173,7 @@ impl<'a> Node<'a>{
     }
 
     // data 
-    pub fn data(&self) -> &RwLock<NodeData> {
+    pub fn data(&self) -> &NodeData {
         &self.raw().data
     }
 }
