@@ -377,7 +377,7 @@ checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 [[package]]
 name = "xml-parser"
 version = "0.1.0"
-source = "git+https://github.com/shaddyshad/xml-parser.git#1a6e126dedad7c0dc855865fabd7057767fa249d"
+source = "git+https://github.com/shaddyshad/xml-parser.git#5e9b00d82ee7aca3dc5b304a52d6269bf13a1e06"
 dependencies = [
  "tendril",
 ]

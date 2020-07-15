@@ -39,7 +39,7 @@ fn parse_fragment(r: ParseResult) -> PyResult<IpDom> {
 
 // add binding for the generated python module
 #[pymodule]
-fn xmltodom(py: Python, m: &PyModule) -> PyResult<()>{
+fn xmltodom(_py: Python, m: &PyModule) -> PyResult<()>{
     // the py arg represents that we are holding a GIL 
     #[pyfn(m, "parse_xml_string")]
     fn parse_xml_string(_py: Python, xml: String) -> PyResult<IpDom>{

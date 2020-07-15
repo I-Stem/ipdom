@@ -2,7 +2,6 @@ use super::{StrTendril, IpDom, QualName};
 use std::collections::HashMap;
 use super::utils::matches;
 use std::fmt;
-use std::cell::RefCell;
 use crate::pyo3::prelude::*;
 
 /// Node internal representation
