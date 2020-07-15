@@ -7,7 +7,7 @@ use pyo3::exceptions;
 mod dom;
 
 pub use xml_parser::{from_file, StrTendril, Handle, RawToken, parse_text};
-pub use dom::{IpDom, NodeData};
+pub use dom::{IpDom};
 
 pub type ParseResult = Result<xml_parser::Tokenizer<xml_parser::TreeBuilder>, String>;
 

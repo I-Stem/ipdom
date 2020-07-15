@@ -1,8 +1,9 @@
 use super::{Handle,RawToken};
 mod interface;
 use std::cell::RefCell;
-pub use interface::{Node, NodeData};
+pub use interface::{Node};
 use super::pyo3::prelude::*;
+use std::collections::HashMap;
 
 ///! index pointed dom
 #[pyclass]
@@ -72,20 +73,20 @@ impl IpDom {
 
             if children.is_empty(){
                 // insert an attribute 
-                if let Some(attribute) = get_attribute(data){
-                    return insert_attr(dom, parent, attribute);
-                }
+                let attributes = get_attributes(data);
+
+                insert_attr(dom, parent, attributes);
                 
             }else{
                 // create a new node, insert and recur into the children
-                if let Some(node) = create_node(data){
-                    let index = append(dom, parent, prev, node);
+                let node = create_node(data);
 
-                    let mut prev = None;
+                let index = append(dom, parent, prev, node);
 
-                    for child in children.iter(){
-                        prev = recur(&child, dom, Some(index), prev);
-                    }
+                let mut prev = None;
+
+                for child in children.iter(){
+                    prev = recur(&child, dom, Some(index), prev);
                 }
                 
             }
@@ -100,7 +101,7 @@ impl IpDom {
             dom: &mut IpDom,
             parent: Option<usize>,
             prev: Option<usize>,
-            data: NodeData
+            data: (String, HashMap<String, String>)
         ) -> usize {
             let index = dom.len();
 
@@ -109,9 +110,10 @@ impl IpDom {
                 parent,
                 prev,
                 next: None,
-                data,
+                name: data.0,
                 first_child: None,
-                last_child: None
+                last_child: None,
+                attributes: data.1
             };
 
             dom.nodes.push(node);
@@ -142,14 +144,14 @@ impl IpDom {
         fn insert_attr(
             dom: &mut IpDom,
             index: Option<usize>,
-            attribute: (String, String)
+            attribute: HashMap<String, String>
         ) -> Option<usize> {
             if let Some(index) = index {
                 if let Some(node) = dom.nth(index){
                     // get the raw representation and insert
-                    let mut data = node.data;
+                    let mut data = node.attributes;
     
-                    data.insert(attribute);
+                    data.extend(attribute);
                 }
             }
             
@@ -158,27 +160,35 @@ impl IpDom {
         }
 
         /// Create a node from the given raw token 
-        fn create_node(token: &RefCell<RawToken>) -> Option<NodeData>{
+        fn create_node(token: &RefCell<RawToken>) ->(String, HashMap<String, String>){
             let data = token.borrow();
 
             let name = &data.name;
+            let attr = get_attributes(token);
 
 
-            return Some(NodeData::new(name.0.to_string()));
+            (name.0.to_string(), attr)
         }
 
         /// Extract an attribute frrom a raw token 
-        fn get_attribute(token: &RefCell<RawToken>) -> Option<(String, String)>{
+        fn get_attributes(token: &RefCell<RawToken>) -> HashMap<String, String>{
             let data = token.borrow();
+            let mut map = HashMap::new();
 
             let name = &data.name.0;
             let value = &data.value.as_ref();
+            let attrs = &data.attributes;
 
             if let Some(value) = value {
-                return Some((name.to_string(), value.to_string()));
+                map.insert(name.to_string(), value.to_string());
             }
 
-            None
+            // add the attributes
+            for (key, value) in attrs{
+                map.insert(key.to_string(), value.to_string());
+            }
+
+            map
         }
     }
 }

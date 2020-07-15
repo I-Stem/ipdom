@@ -19,39 +19,8 @@ pub struct Node {
     #[pyo3(get)]
     pub last_child: Option<usize>,
     #[pyo3(get)]
-    pub data: NodeData
-}
-
-/// Holds the data stored in a raw node 
-#[pyclass]
-#[derive(Debug, Clone)]
-pub struct NodeData {
+    pub name: String,
     #[pyo3(get)]
-    name: String,
-    #[pyo3(get)]
-    attributes: HashMap<String, String>
-}
-
-impl NodeData {
-    pub fn new(name: String) -> Self {
-        Self {
-            name,
-            attributes: HashMap::new()
-        }
-    }
-    /// Insert an attribute 
-    pub fn insert(&mut self, attr: (String, String)){
-        self.attributes.insert(attr.0, attr.1);
-    }
-
-    /// get the name of this node 
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Return a reference to the attributes
-    pub fn attrs(&self) -> &HashMap<String, String> {
-        &self.attributes
-    }
+    pub attributes: HashMap<String, String>
 }
 
