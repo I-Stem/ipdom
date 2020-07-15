@@ -5,10 +5,9 @@ use pyo3::prelude::*;
 use pyo3::exceptions;
 
 mod dom;
-mod utils;
 
 pub use xml_parser::{from_file, StrTendril, Handle, RawToken, parse_text};
-pub use dom::{IpDom, QualName, NodeData};
+pub use dom::{IpDom, NodeData};
 
 pub type ParseResult = Result<xml_parser::Tokenizer<xml_parser::TreeBuilder>, String>;
 

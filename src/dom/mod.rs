@@ -1,9 +1,7 @@
-use super::{StrTendril, Handle,RawToken, utils};
+use super::{Handle,RawToken};
 mod interface;
-mod qual_name;
 use std::cell::RefCell;
 pub use interface::{Node, NodeData};
-pub use qual_name::QualName;
 use super::pyo3::prelude::*;
 
 ///! index pointed dom
@@ -165,9 +163,8 @@ impl IpDom {
 
             let name = &data.name;
 
-            let qname = QualName::from_tendril(&name.0);
 
-            return Some(NodeData::new(qname));
+            return Some(NodeData::new(name.0.to_string()));
         }
 
         /// Extract an attribute frrom a raw token 

@@ -1,4 +1,3 @@
-use super::{ QualName};
 use std::collections::HashMap;
 use crate::pyo3::prelude::*;
 
@@ -27,12 +26,14 @@ pub struct Node {
 #[pyclass]
 #[derive(Debug, Clone)]
 pub struct NodeData {
-    name: QualName,
+    #[pyo3(get)]
+    name: String,
+    #[pyo3(get)]
     attributes: HashMap<String, String>
 }
 
 impl NodeData {
-    pub fn new(name: QualName) -> Self {
+    pub fn new(name: String) -> Self {
         Self {
             name,
             attributes: HashMap::new()
@@ -44,7 +45,7 @@ impl NodeData {
     }
 
     /// get the name of this node 
-    pub fn name(&self) -> &QualName {
+    pub fn name(&self) -> &str {
         &self.name
     }
 
