@@ -26,7 +26,6 @@ fn parse_fragment(r: ParseResult) -> Result<IpDom, &'static str> {
         if let Some(x) = r.sink().output(){
             let built = IpDom::from_fragment(&x);
 
-
             return Ok(built);
         }
     }
@@ -40,9 +39,9 @@ mod tests {
 
     #[test]
     fn can_parse_xml_text() {
-        let xml = String::from("<?xml /> <root><Section_1 type='str'> \n <question> Write some formula </question> \n </Section_1> </root>");
+        let xml = String::from("<root><key name='SECTION – A' type='dict'> \n <item type='dict'> <question type='string'> Write some formula </question> </item> \n </key> </root>");
         let dom = parse_xml(xml).unwrap();
 
-        assert_eq!(dom.len(), 2)
+        assert_eq!(dom.len(), 3)
     }
 }
