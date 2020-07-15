@@ -2,9 +2,9 @@
 # It is not intended for manual editing.
 [[package]]
 name = "aho-corasick"
-version = "0.7.10"
+version = "0.7.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8716408b8bc624ed7f65d223ddb9ac2d044c0547b6fa4b0d554f3a9540496ada"
+checksum = "043164d8ba5c4c3035fec9bbee8647c0261d788f3474306f93bb65901cae0e86"
 dependencies = [
  "memchr",
 ]
@@ -98,7 +98,7 @@ checksum = "05e42f7c18b8f902290b009cde6d651262f956c98bc51bca4cd1d511c9cd85c7"
 [[package]]
 name = "xml-parser"
 version = "0.1.0"
-source = "git+https://github.com/shaddyshad/xml-parser.git#3f93b8987a1a55a80ee2e633d9a12a03f36edbff"
+source = "git+https://github.com/shaddyshad/xml-parser.git#1a6e126dedad7c0dc855865fabd7057767fa249d"
 dependencies = [
  "tendril",
 ]
