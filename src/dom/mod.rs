@@ -71,18 +71,12 @@ impl IpDom {
             let children = handle.children.borrow();
             let data = &handle.data;
 
-            if children.is_empty(){
+            // create a new node, insert and recur into the children
+            let node = create_node(data);
+            let index = append(dom, parent, prev, node);
+
+            if !children.is_empty(){
                 // insert an attribute 
-                let attributes = get_attributes(data);
-
-                insert_attr(dom, parent, attributes);
-                
-            }else{
-                // create a new node, insert and recur into the children
-                let node = create_node(data);
-
-                let index = append(dom, parent, prev, node);
-
                 let mut prev = None;
 
                 for child in children.iter(){
@@ -90,7 +84,6 @@ impl IpDom {
                 }
                 
             }
-
             None
         }
 
@@ -140,24 +133,6 @@ impl IpDom {
         }
 
 
-        ///Insert an attribute to a given node in a given index 
-        fn insert_attr(
-            dom: &mut IpDom,
-            index: Option<usize>,
-            attribute: HashMap<String, String>
-        ) -> Option<usize> {
-            if let Some(index) = index {
-                if let Some(node) = dom.nth(index){
-                    // get the raw representation and insert
-                    let mut data = node.attributes;
-    
-                    data.extend(attribute);
-                }
-            }
-            
-
-            index
-        }
 
         /// Create a node from the given raw token 
         fn create_node(token: &RefCell<RawToken>) ->(String, HashMap<String, String>){
