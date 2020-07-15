@@ -2,7 +2,7 @@ use super::{StrTendril, Handle,RawToken, utils};
 mod interface;
 mod qual_name;
 use std::cell::RefCell;
-pub use interface::{RawNode, Node, NodeData, AttributeTypes};
+pub use interface::{Node, NodeData};
 pub use qual_name::QualName;
 use super::pyo3::prelude::*;
 
@@ -11,7 +11,7 @@ use super::pyo3::prelude::*;
 #[derive(Debug)]
 pub struct IpDom {
     #[pyo3(get, set)]
-    pub nodes: Vec<RawNode>
+    pub nodes: Vec<Node>
 }
 
 #[pymethods]
@@ -30,7 +30,7 @@ impl IpDom {
     }
 
     /// Return the node at that index, or None if none
-    pub fn nth(&self, index: usize) -> Option<RawNode>{
+    pub fn nth(&self, index: usize) -> Option<Node>{
         if index < self.len(){
             Some(self.nodes[index].clone())
         }else{
@@ -106,7 +106,7 @@ impl IpDom {
         ) -> usize {
             let index = dom.len();
 
-            let node = RawNode {
+            let node = Node {
                 index,
                 parent,
                 prev,
@@ -144,7 +144,7 @@ impl IpDom {
         fn insert_attr(
             dom: &mut IpDom,
             index: Option<usize>,
-            attribute: (String, AttributeTypes)
+            attribute: (String, String)
         ) -> Option<usize> {
             if let Some(index) = index {
                 if let Some(node) = dom.nth(index){
@@ -171,22 +171,15 @@ impl IpDom {
         }
 
         /// Extract an attribute frrom a raw token 
-        fn get_attribute(token: &RefCell<RawToken>) -> Option<(String, AttributeTypes)>{
+        fn get_attribute(token: &RefCell<RawToken>) -> Option<(String, String)>{
             let data = token.borrow();
 
             let name = &data.name.0;
             let value = &data.value.as_ref();
-            let attrs = &data.attributes;
 
-            if let Some(attr_type) = attrs.get(&StrTendril::from("type")){
-                if let Some(value) = value {
-                    let attr = AttributeTypes::from_str(attr_type, value, &name);
-
-                    return Some((name.to_string(), attr));
-                }
-                
+            if let Some(value) = value {
+                return Some((name.to_string(), value.to_string()));
             }
-
 
             None
         }

@@ -8,7 +8,7 @@ mod dom;
 mod utils;
 
 pub use xml_parser::{from_file, StrTendril, Handle, RawToken, parse_text};
-pub use dom::{IpDom, Node, QualName, AttributeTypes, NodeData};
+pub use dom::{IpDom, QualName, NodeData};
 
 pub type ParseResult = Result<xml_parser::Tokenizer<xml_parser::TreeBuilder>, String>;
 
@@ -29,7 +29,7 @@ fn parse_fragment(r: ParseResult) -> PyResult<IpDom> {
     if let Ok(r) = r {
         if let Some(x) = r.sink().output(){
             let built = IpDom::from_fragment(&x);
-
+            
             return Ok(built);
         }
     }
