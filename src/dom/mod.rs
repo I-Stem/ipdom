@@ -37,14 +37,43 @@ impl IpDom {
         }
     }
 
-    // // find a predicate 
-    // pub fn find(&self, predicate: Box<dyn Predicate>, next: usize) -> Find {
-    //     Find {
-    //         dom: &self,
-    //         predicate,
-    //         next
-    //     }
-    // }
+    /// find the next node 
+    pub fn next(&self, start_index: usize) -> Option<Node>{
+        if let Some(start_node) = self.nth(start_index){
+            // find first child
+            if let Some(first_child) = start_node.first_child{
+                return self.nth(first_child);
+            }
+
+            // find next
+            if let Some(next) = start_node.next{
+                return self.nth(next);
+            }
+
+            // else, move to the parent, and find the next 
+            return self.find_next_parent(start_index);
+        }
+
+        None
+    }
+
+    /// Find the closes next node from the given node parent 
+    pub fn find_next_parent(&self, index: usize) -> Option<Node>{
+        if let Some(node) = self.nth(index){
+            if node.parent.is_some(){
+                if let Some(parent) = self.nth(node.parent.unwrap()){
+                    if let Some(next) = parent.next{
+                        return self.nth(next)
+                    }else{
+                        return self.find_next_parent(parent.index);
+                    }
+                }
+            }
+        }
+
+        None
+    }
+
 }
 
 
@@ -84,7 +113,8 @@ impl IpDom {
                 }
                 
             }
-            None
+
+            Some(index) 
         }
 
         /// Append nodes to the document

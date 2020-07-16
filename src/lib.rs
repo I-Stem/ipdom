@@ -28,7 +28,8 @@ fn parse_fragment(r: ParseResult) -> PyResult<IpDom> {
     if let Ok(r) = r {
         if let Some(x) = r.sink().output(){
             let built = IpDom::from_fragment(&x);
-            println!("{:#?}", &built);
+            println!("{:#?}", built);
+            
             return Ok(built);
         }
     }
